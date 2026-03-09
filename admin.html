@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Skyven Store Admin</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f3f3f3;
+text-align:center;
+padding:40px;
+}
+
+input{
+display:block;
+margin:10px auto;
+padding:10px;
+width:250px;
+}
+
+button{
+padding:10px 20px;
+background:black;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Skyven Store Admin</h2>
+
+<input id="name" placeholder="Product Name">
+
+<input id="price" placeholder="Price">
+
+<input id="img" placeholder="Image Link">
+
+<button onclick="addProduct()">Add Product</button>
+
+<script>
+
+function addProduct(){
+
+let name=document.getElementById("name").value
+let price=document.getElementById("price").value
+let img=document.getElementById("img").value
+
+let product={
+name:name,
+price:price,
+img:img
+}
+
+let products=JSON.parse(localStorage.getItem("products")) || []
+
+products.push(product)
+
+localStorage.setItem("products",JSON.stringify(products))
+
+alert("Product added!")
+
+}
+
+</script>
+
+</body>
+</html>
