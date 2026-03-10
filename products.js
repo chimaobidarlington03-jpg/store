@@ -1,7 +1,7 @@
 let cart = [];
 const phone = "2347049884342"; // your WhatsApp number
 
-// Google Sheet CSV link (replace with your own)
+// Google Sheet CSV link (replace with you own)
 const csvLink = "https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv";
 
 // Fetch products
