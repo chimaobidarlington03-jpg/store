@@ -1,28 +1,36 @@
 let cart = [];
 const phone = "2347049884342"; // your WhatsApp number
 
-// Replace this link with your CSV link
-fetch("https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv")
-.then(res => res.text())
-.then(data => {
+// Your CSV link from Google Sheets
+const csvLink = "https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv";
 
-    let rows = data.split("\n");
-    rows.slice(1).forEach(row => {
-        let cols = row.split(",");
-        let name = cols[0];
-        let price = cols[1];
-        let img = cols[2];
+// Fetch and parse CSV using PapaParse
+Papa.parse(csvLink, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+        results.data.forEach(item => {
+            let name = item.name;
+            let price = parseFloat(item.price); // ensure price is number
+            let img = item.img;
 
-        let card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-            <img src="${img || 'https://via.placeholder.com/200'}" alt="${name}">
-            <h3>${name}</h3>
-            <p class="price">₦${price}</p>
-            <button onclick="addToCart('${name}', ${price})">Add to Cart</button>
-        `;
-        document.getElementById("productList").appendChild(card);
-    });
+            let card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <img src="${img || 'https://via.placeholder.com/200'}" alt="${name}">
+                <h3>${name}</h3>
+                <p class="price">₦${price}</p>
+                <button class="addBtn">Add to Cart</button>
+            `;
+
+            // Attach event listener to the button
+            card.querySelector(".addBtn").addEventListener("click", () => addToCart(name, price));
+
+            document.getElementById("productList").appendChild(card);
+        });
+    }
 });
 
 function addToCart(name, price){
@@ -31,20 +39,20 @@ function addToCart(name, price){
 }
 
 function checkout(){
-    if(cart.length==0){
+    if(cart.length === 0){
         alert("Your cart is empty");
         return;
     }
 
-    let message="Hello, I want to order:\n";
-    let total=0;
+    let message = "Hello, I want to order:\n";
+    let total = 0;
 
-    cart.forEach(item=>{
-        message+=item.name+" - ₦"+item.price+"\n";
-        total+=parseFloat(item.price);
+    cart.forEach(item => {
+        message += item.name + " - ₦" + item.price + "\n";
+        total += item.price;
     });
 
-    message+="Total: ₦"+total;
-    let url="https://wa.me/"+phone+"?text="+encodeURIComponent(message);
-    window.open(url,"_blank");
+    message += "Total: ₦" + total;
+    let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+    window.open(url, "_blank");
 }
