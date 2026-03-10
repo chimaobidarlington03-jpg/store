@@ -1,7 +1,7 @@
 let cart = [];
-const phone = "2347049884342"; // your WhatsApp number
+const phone = "2347049884342"; // WhatsApp number
 
-// Your CSV link from Google Sheets
+// Your CSV link here (replace with your own)
 const csvLink = "https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv";
 
 // Fetch and parse CSV using PapaParse
@@ -12,7 +12,7 @@ Papa.parse(csvLink, {
     complete: function(results) {
         results.data.forEach(item => {
             let name = item.name;
-            let price = parseFloat(item.price); // ensure price is number
+            let price = parseFloat(item.price); // make sure price is a number
             let img = item.img;
 
             let card = document.createElement("div");
@@ -25,7 +25,7 @@ Papa.parse(csvLink, {
                 <button class="addBtn">Add to Cart</button>
             `;
 
-            // Attach event listener to the button
+            // Attach click event to the button safely
             card.querySelector(".addBtn").addEventListener("click", () => addToCart(name, price));
 
             document.getElementById("productList").appendChild(card);
