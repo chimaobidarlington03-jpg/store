@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Skyven Store</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyven's Store</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- PapaParse library -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
 
-<header>Skyven Store</header>
+    <header>
+        <h1>Skyven's Store</h1>
+        <div class="cart-info">
+            <span id="cartCount">0</span> items in cart
+        </div>
+    </header>
 
-<div class="products" id="productList"></div>
+    <main>
+        <div class="products" id="productList"></div>
+        <button class="checkoutBtn" onclick="checkout()">Checkout via WhatsApp</button>
+    </main>
 
-<div class="cart" onclick="checkout()">Checkout 🛒</div>
-
-<script src="products.js"></script>
-<script src="store.js"></script>
-
+    <script src="product.js"></script>
 </body>
 </html>
