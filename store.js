@@ -1,3 +1,5 @@
+let savedProducts = JSON.parse(localStorage.getItem("products")) || [];
+products.push(...savedProducts);
 let cart = [];
 const phone = "2347049884342"; // Put your WhatsApp number
 
