@@ -1,7 +1,7 @@
 let cart = [];
 const phone = "2347049884342"; // WhatsApp number
 
-// Your CSV link here (replace with your own)
+// CSV link from Google Sheets
 const csvLink = "https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv";
 
 // Fetch and parse CSV using PapaParse
@@ -11,22 +11,26 @@ Papa.parse(csvLink, {
     skipEmptyLines: true,
     complete: function(results) {
         results.data.forEach(item => {
-            let name = item.name;
-            let price = parseFloat(item.price); // make sure price is a number
-            let img = item.img;
+            let name = item.name?.trim() || "Unnamed Product";
+            let price = parseFloat(item.price?.trim()) || 0;
+            let img = item.img?.trim() || 'https://via.placeholder.com/200';
 
+            // Create card
             let card = document.createElement("div");
             card.className = "card";
 
+            // Add card content
             card.innerHTML = `
-                <img src="${img || 'https://via.placeholder.com/200'}" alt="${name}">
+                <img src="${img}" alt="${name}">
                 <h3>${name}</h3>
                 <p class="price">₦${price}</p>
                 <button class="addBtn">Add to Cart</button>
             `;
 
-            // Attach click event to the button safely
-            card.querySelector(".addBtn").addEventListener("click", () => addToCart(name, price));
+            // Attach click event safely
+            card.querySelector(".addBtn").addEventListener("click", () => {
+                addToCart(name, price);
+            });
 
             document.getElementById("productList").appendChild(card);
         });
@@ -34,8 +38,9 @@ Papa.parse(csvLink, {
 });
 
 function addToCart(name, price){
+    if(price === 0) price = 0; // ensure price is a number
     cart.push({name, price});
-    alert(name + " added to cart");
+    alert(`${name} added to cart!`);
 }
 
 function checkout(){
@@ -48,11 +53,11 @@ function checkout(){
     let total = 0;
 
     cart.forEach(item => {
-        message += item.name + " - ₦" + item.price + "\n";
+        message += `${item.name} - ₦${item.price}\n`;
         total += item.price;
     });
 
-    message += "Total: ₦" + total;
-    let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+    message += `Total: ₦${total}`;
+    let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
 }
