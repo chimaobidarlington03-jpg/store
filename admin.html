@@ -25,6 +25,18 @@ background:black;
 color:white;
 border:none;
 cursor:pointer;
+margin:5px;
+}
+
+table{
+margin:auto;
+margin-top:30px;
+border-collapse:collapse;
+}
+
+td,th{
+padding:10px 20px;
+border:1px solid #ccc;
 }
 
 </style>
@@ -36,14 +48,49 @@ cursor:pointer;
 <h2>Skyven Store Admin</h2>
 
 <input id="name" placeholder="Product Name">
-
 <input id="price" placeholder="Price">
-
 <input id="img" placeholder="Image Link">
 
 <button onclick="addProduct()">Add Product</button>
 
+<h3>Products</h3>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Price</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody id="productTable"></tbody>
+
+</table>
+
 <script>
+
+function loadProducts(){
+
+let products = JSON.parse(localStorage.getItem("products")) || []
+
+let table = document.getElementById("productTable")
+
+table.innerHTML=""
+
+products.forEach((p,index)=>{
+
+table.innerHTML += `
+<tr>
+<td>${p.name}</td>
+<td>₦${p.price}</td>
+<td><button onclick="deleteProduct(${index})">❌</button></td>
+</tr>
+`
+
+})
+
+}
 
 function addProduct(){
 
@@ -63,9 +110,23 @@ products.push(product)
 
 localStorage.setItem("products",JSON.stringify(products))
 
-alert("Product added!")
+loadProducts()
 
 }
+
+function deleteProduct(index){
+
+let products=JSON.parse(localStorage.getItem("products")) || []
+
+products.splice(index,1)
+
+localStorage.setItem("products",JSON.stringify(products))
+
+loadProducts()
+
+}
+
+loadProducts()
 
 </script>
 
