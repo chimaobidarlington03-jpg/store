@@ -1,5 +1,5 @@
 let cart = [];
-const phone = "2347049884342"; // WhatsApp number
+const phone = "2348123456789"; // WhatsApp number
 
 // CSV link from Google Sheets
 const csvLink = "https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv";
@@ -13,15 +13,13 @@ Papa.parse(csvLink, {
         results.data.forEach(item => {
             let name = item.name?.trim() || "Unnamed Product";
             let price = parseFloat(item.price?.trim()) || 0;
-            let img = item.img?.trim() || 'https://via.placeholder.com/200';
 
             // Create card
             let card = document.createElement("div");
             card.className = "card";
 
-            // Add card content
+            // Add card content without image
             card.innerHTML = `
-                <img src="${img}" alt="${name}">
                 <h3>${name}</h3>
                 <p class="price">₦${price}</p>
                 <button class="addBtn">Add to Cart</button>
@@ -38,7 +36,6 @@ Papa.parse(csvLink, {
 });
 
 function addToCart(name, price){
-    if(price === 0) price = 0; // ensure price is a number
     cart.push({name, price});
     alert(`${name} added to cart!`);
 }
