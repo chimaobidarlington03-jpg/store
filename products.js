@@ -1,10 +1,10 @@
 let cart = [];
-const phone = "2347049884342"; // WhatsApp number
+const phone = "2347049884342"; // your WhatsApp number
 
-// CSV link from Google Sheets
+// Google Sheet CSV link (replace with your own)
 const csvLink = "https://docs.google.com/spreadsheets/d/1h1AOC9Y7Kp-jTobt4DKLOnFtBY5gzo9Me87qJp2i7LI/gviz/tq?tqx=out:csv";
 
-// Fetch products and build the list
+// Fetch products
 Papa.parse(csvLink, {
     download: true,
     header: true,
@@ -14,17 +14,16 @@ Papa.parse(csvLink, {
             let name = item.name?.trim() || "Unnamed Product";
             let price = parseFloat(item.price?.trim()) || 0;
 
-            // Create a product card
+            // Create product card
             let card = document.createElement("div");
             card.className = "card";
-
             card.innerHTML = `
                 <h3>${name}</h3>
                 <p class="price">₦${price}</p>
                 <button class="addBtn">Add to Cart</button>
             `;
 
-            // Add click event for Add to Cart
+            // Add click event
             card.querySelector(".addBtn").addEventListener("click", () => {
                 addToCart(name, price);
             });
@@ -34,13 +33,19 @@ Papa.parse(csvLink, {
     }
 });
 
-// Function to add product to cart
+// Add product to cart
 function addToCart(name, price){
     cart.push({name, price});
     alert(`${name} added to cart!`);
+    updateCartCount();
 }
 
-// Function to checkout via WhatsApp
+// Update cart count
+function updateCartCount(){
+    document.getElementById("cartCount").textContent = cart.length;
+}
+
+// Checkout via WhatsApp
 function checkout(){
     if(cart.length === 0){
         alert("Your cart is empty");
